@@ -84,3 +84,8 @@ function layout_spring_adj{T}(adj_matrix::Array{T,2}; C=2.0, MAXITER=100, INITTE
 
     return locs_x,locs_y
 end
+
+function layout_spring_adj{V, E}(g::AbstractGraph{V, E}; keyargs...)
+  # Very minimal conversion from graph object to adjacency matrix
+  return layout_spring_adj(adjacency_matrix(g); keyargs...)
+end

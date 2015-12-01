@@ -78,6 +78,12 @@ function compose_layout_adj{S, T<:Real}(
         compose(context(), lines..., stroke(edgestrokec), linewidth(LINEWIDTH))
     )
 end
+# Adjusts by replacing the adjacency matrix with an abstract graph
+function compose_layout_adj{V, E}(g::AbstractGraph{V, E}, 
+                                  posargs...; 
+                                  keyargs...)
+    compose_layout_adj(adjacency_matrix(g), posargs...; keyargs...)
+end
 
 function arrowcoords(θ, endx, endy, arrowlength, angleoffset=20.0/180.0*π)
     arr1x = endx - arrowlength*cos(θ+angleoffset)

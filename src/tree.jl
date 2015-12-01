@@ -147,6 +147,14 @@ function layout_tree{T}(adj_list::AdjList{T},
     return c
 end
 
+# Trivial modification to allow using Graphs.jl objects
+function layout_tree{V, E}(g::AbstractGraph{V, E}, 
+                           labels::Vector; keyargs...)
+  adj_mat = adjacency_matrix(g)
+  cols = size(adj_mat)[1]
+  return layout_tree([find(reshape(adj_mat[r, 1:end], cols)) for r in 1:cols], labels; keyargs...)
+  # TODO rewrite more completely
+end
 
 
 @doc """

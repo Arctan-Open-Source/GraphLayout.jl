@@ -7,6 +7,7 @@ module GraphLayout
     end
     using Requires  # to optionally load JuMP
     using Compose  # for plotting features
+    using Graphs  # for Graph interface
 
     typealias AdjList{T} Vector{Vector{T}}
 

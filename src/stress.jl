@@ -91,6 +91,16 @@ function layout_stressmajorize_adj(δ, p::Int=2, w=nothing, X0=randn(size(δ, 1)
     returnall ? (Xs, stresses) : Xs[end]
 end
 
+# TODO create a stressmajorization implementation that uses AbstractGraph in a way that makes sense
+# function layout_stressmajorize_adj{V, E}(g::AbstractGraph{V, E}, p::Int=2, w=nothing, X0=randn(size(δ, 1), p);
+#        maxiter = 400size(X0, 1)^2, abstols=√(eps(eltype(X0))),
+#        reltols=√(eps(eltype(X0))), abstolx=√(eps(eltype(X0))),
+#        verbose = false, returnall = false)
+#     # Takes a bit more thought this time
+#     # There's nothing implicit in the graph to imply ideal distance
+#     # For now create the pairs by assuming an "ExEdge" with an "ideal_distance" attribute
+# end
+
 @doc """
 Stress function to majorize
 

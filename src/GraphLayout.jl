@@ -9,7 +9,9 @@ module GraphLayout
     using Compose  # for plotting features
     using Graphs  # for Graph interface
 
-    typealias AdjList{T} Vector{Vector{T}}
+    # Graph interface functions to make AdjList behave as graph objects
+    # allows backward compatibility if required
+    include("AdjList.jl")
 
     # Spring-based force layout algorithms
     export layout_spring_adj

@@ -67,7 +67,6 @@ function _layer_assmt_longestpath_rec{T}(adj_list::AdjList{T}, layers, i)
     # Look for all children of vertex i, try to bump their layer
     n = length(adj_list)
     for j in adj_list[i]
-        println(adj_list[i])
         if layers[j] == -1 || layers[j] <= layers[i]
             layers[j] = layers[i] + 1
             _layer_assmt_longestpath_rec(adj_list, layers, j)

@@ -25,7 +25,7 @@ vertices{T}(g::_AdjList{T}) = 1:num_vertices(g)
 num_edges{T}(g::_AdjList{T}) = sum([length(edgeList) for edgeList in g.list])
 
 function edges{T}(g::_AdjList{T})
-    edgeGroup = Array{IEdge}()
+    edgeGroup = Array{IEdge, 1}()
     for v in vertices(g)
         push!(edgeGroup, out_edges(v)...)
     end
@@ -53,30 +53,38 @@ end
 
 # bidirectional adjacency list
 function in_neighbors{T}(v, g::_AdjList{T})
-   ins = Array{Int}()
-   for u in vertices(g)
-       if v == u
-           continue
-       end # if
-       for t in out_neighbors(u)
-           if v == t
-               push!(ins, u)
-               break
-           end # if
-       end # for
-   end # for
-   return ins
+    ins = Array{Int, 1}()
+    for u in vertices(g)
+        if v == u
+            continue
+        end # if
+        for t in out_neighbors(u, g)
+            if v == t
+                push!(ins, u)
+                break
+            end # if
+        end # for
+    end # for
+    return ins
 end
 
 # bidirectional incidence list interface
-# much slower and a possible reason not to use adjacency lists
-function in_degree{T}(v, g::_AdjList{T})
-    return length(in_neighbors(v, g))
-end
+in_degree{T}(v, g::_AdjList{T}) = length(in_neighbors(v, g))
 
+# much slower and a possible reason not to use adjacency lists
 function in_edges{T}(v, g::_AdjList{T})
     # This is horrific due to the need to keep edge indices consistent
+    ins = Array{IEdge, 1}()
     neighbors = in_neighbors(v, g)
+    offset = 0
+    for u in vertices(g)
+        i = findfirst(out_neighbors(u), v)
+        if i > 0
+          push!(ins, IEdge(offset + i, u, v))
+        end
+        offset += out_degree(u)
+    end
+    return ins
 end
 
 # @graph_implements _AdjList{T} vertex_list edge_list vertex_map edge_map 

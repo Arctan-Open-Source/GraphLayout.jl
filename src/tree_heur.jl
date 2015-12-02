@@ -1,48 +1,9 @@
-
-import Graphs: adjacency_matrix
-
 @doc """
     Assigns layers using the longest path method.
 
     Arguments:
     adj_list        Directed graph in adjacency list format
-    g               Object implementing the vertex list, vertex map, and 
-                    bidirectional adjacency list interfaces of Graphs.jl
 """ ->
-function _layer_assmt_longestpath{V, E}(g::AbstractGraph{V, E})
-    # Could just convert to an adjacency matrix for minimal work
-    #adj_mat = adjacency_matrix(g)
-    #adj_list = [adj_mat[] size(adj_mat)]
-    #return _layer_assmt_longestpath([adj_mat[r, 1:end] for r in 1:size(adj_mat)])
-
-    # Probably faster in the long run to use the interface
-    # Should provide a simpler function in the long run
-    @graph_requires g vertex_list bidirectional_adjacency_list
-
-    layers = fill(-1, num_vertices(g))
-
-    for v in vertices(g)
-        if in_degree(v, g) == 0
-            # Start recursive walk from this vertex
-            layers[vertex_index(v)] = 1
-            _layer_assmt_longestpath_rec(g, layers, v)
-        end
-    end
-
-    return layers
-end
-function _layer_assmt_longestpath_rec{V, E}(g::AbstractGraph{V, E}, layers, v::V)
-    # Look for all children of v, try to bump their layer
-    i = vertex_index(v)
-    for c in out_neighbors(v, g)
-        j = vertex_index(c)
-        if layers[j] == -1 || layers[j] <= layers[i]
-            layers[j] = layers[i] + 1
-            _layer_assmt_longestpath_rec(adj_list, layers, c)
-        end
-    end
-end
-
 function _layer_assmt_longestpath{T}(adj_list::AdjList{T})
     n = length(adj_list)
     layers = fill(-1, n)
@@ -83,14 +44,6 @@ end
     orig_adj_list   Original directed graph in adjacency list format
     layers          Assignment of original vertices
 """ ->
-function _layer_assmt_dummy{V, E}(orig_g::AbstractGraph{V, E}, layers, v::V)
-    g = deepcopy(orig_g)
-    for v in vertices(g)
-    end
-
-    return g, layers
-end
-
 function _layer_assmt_dummy{T}(orig_adj_list::AdjList{T}, layers)
     adj_list = deepcopy(orig_adj_list)
 

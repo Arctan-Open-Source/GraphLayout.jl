@@ -1,12 +1,15 @@
+
+VERSION >= v"0.4.0" && __precompile__(true)
+
 module GraphLayout
 
-    __precompile__(true)
 
     if VERSION < v"0.4.0"
         using Docile
     end
     using Requires  # to optionally load JuMP
     using Compose  # for plotting features
+    using Compat  # needed for julia v3 compatibility
     using Graphs  # for Graph interface
 
     # Graph interface functions to make AdjList behave as graph objects

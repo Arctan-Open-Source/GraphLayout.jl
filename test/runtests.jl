@@ -1,14 +1,7 @@
 using FactCheck
 using GraphLayout
-# Need to import the package providing units
-if Pkg.installed("Compose") > v"0.3.18"
-    using Measures
-else
-    using Compose
-end
-
-# Needed to add width and height of 4inches to match cached results from
-# older versions of this package
+using JuMP # Needed to trigger @require macro
+import Compose: inch
 
 srand(1)
 

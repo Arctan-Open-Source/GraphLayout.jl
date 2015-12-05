@@ -8,7 +8,8 @@ module GraphLayout
     end
 
     using Compose  # for plotting features
-    using Compat # typealiases and @compat for Union
+    using Requires
+    using Compat # for v0.3 compatibility
 
     typealias AdjList{T} Vector{Vector{T}}
 
@@ -26,9 +27,10 @@ module GraphLayout
     # Heuristic algortihms for tree layout
     include("tree_heur.jl")
     # Optimal algorithms for tree layout, that require JuMP
-    # JuMP will only be loaded if these methods are requested
-    #@require JuMP include(joinpath(Pkg.dir("GraphLayout","src","tree_opt.jl")))
-    include("tree_opt.jl")
+    # These methods will be loaded when JuMP is loaded
+    _ordering_ip(args...) = 
+        error("JuMP package must be loaded for optimization tree layout")
+    @require JuMP include("tree_opt.jl")
 
     # Drawing utilities
     export draw_layout_adj
